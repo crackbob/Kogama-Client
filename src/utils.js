@@ -32,7 +32,7 @@ function UNITY_requestVideoAd (info) {
     SendMessage("ExternalCallback", {
         callbackId: callbackId,
         data: JSON.stringify({
-            adAvailable: false
+            adAvailable: true
         })
     });
 }
@@ -42,9 +42,19 @@ function UNITY_requestRewardedVideoAd (info) {
     SendMessage("ExternalCallback", {
         callbackId: callbackId,
         data: JSON.stringify({
-            adAvailable: false
+            adAvailable: true
         })
     });
+}
+
+function UNITY_showRewardedVideoAd (data) {
+    let callbackId = JSON.parse(data).callbackId;
+    SendMessage("ExternalCallback", {
+        callbackId: callbackId,
+        data: JSON.stringify({
+            status: 1
+        })
+    })
 }
 
 function UNITY_readyForAd () {
