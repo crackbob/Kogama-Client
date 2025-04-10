@@ -1,8 +1,6 @@
 let sessionData = {
     "isSoftLaunch": false,
     "language": "en_US",
-    "planetID": 7460414,
-    "profileID": 0,
     "embedded": true,
     "gameRewardData": null,
     "gameRewardURL": "https://api-www.kgoma.com/v1/api/reward/game-play/",
@@ -20,8 +18,6 @@ let sessionData = {
     "detailedStats": false,
     "isIOSDevice": false
 }
-
-let profileID = 0;
 
 function SendMessage (type, data) {
     Module.SendMessage("BrowserComm", type, JSON.stringify(data));
@@ -103,10 +99,17 @@ function UNITY_sendStatHatCount () {
 }
 
 function UNITY_sendPlayerParams (data) {
+
+    let urlParams = new URLSearchParams(document.location.search);
+    let gameID = urlParams.get("gameID") || 7460414;
+    let profileID = 0;
+
     let sessionCallbackID = JSON.parse(data).callbackId;
-    fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(async (response) => {
+    fetch(`https://www.kogama.com/locator/session/?objectID=${gameID}&profileID=${profileID}&lang=en_US&type=1`).then(async (response) => {
         let data = await response.json();
 
+        sessionData.profileID = profileID;
+        sessionData.planetID = gameID;
         sessionData.profileID = profileID;
 
         sessionData.sessionToken = data.sessionToken;
@@ -119,7 +122,7 @@ function UNITY_sendPlayerParams (data) {
         sessionData.pingURL = `https://www.kogama.com/locator/session/${sessionTokenID}/ping/?token=${data.sessionToken}`;
         sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}`;
         sessionData.unityPacketURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&plugin=WEBGL&ssl=1&unityPacket=1`;
-        sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&profileID=${profileID}&objectID=7460414&lang=en_US&type=1&referrer=kogama&plugin=WEBGL&ssl=1&unityPacket=1`;
+        sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&profileID=${profileID}&objectID=${gameID}&lang=en_US&type=1&referrer=kogama&plugin=WEBGL&ssl=1&unityPacket=1`;
 
         sessionData.serverIP = `wss://${data.hostName}:${data.wssPort}`;
         
