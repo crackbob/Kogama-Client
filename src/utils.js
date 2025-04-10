@@ -105,7 +105,7 @@ function UNITY_sendPlayerParams (data) {
     let profileID = 0;
 
     let sessionCallbackID = JSON.parse(data).callbackId;
-    fetch(`https://www.kogama.com/locator/session/?objectID=${gameID}&profileID=${profileID}&lang=en_US&type=1`).then(async (response) => {
+    fetch(`https://www.kogama.com/locator/session/?objectID=${gameID}&profileID=${profileID}&lang=en_US&type=play`).then(async (response) => {
         let data = await response.json();
 
         sessionData.profileID = profileID;
