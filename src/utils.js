@@ -23,32 +23,6 @@ let sessionData = {
 
 let profileID = 0;
 
-let sessionCallbackID = 0;
-fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(async (response) => {
-    let data = await response.json();
-
-    sessionData.profileID = profileID;
-
-    sessionData.sessionToken = data.sessionToken;
-    sessionData.token = data.token;
-
-    sessionData.newPlanetName = data.sessionID;
-    sessionData.planetName = data.sessionID;
-
-    let sessionTokenID = JSON.parse(data.sessionToken.split(".")[0]).id;
-    sessionData.pingURL = `https://www.kogama.com/locator/session/${sessionTokenID}/ping/?token=${data.sessionToken}`;
-    sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}`;
-    sessionData.unityPacketURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&plugin=WEBGL&ssl=1&unityPacket=1`;
-    sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&profileID=${profileID}&objectID=7460414&lang=en_US&type=1&referrer=kogama&plugin=WEBGL&ssl=1&unityPacket=1`;
-
-    sessionData.serverIP = `wss://${data.hostName}:${data.wssPort}`;
-    
-    SendMessage("ExternalCallback", {
-        callbackId: sessionCallbackID,
-        data: JSON.stringify(sessionData)
-    });
-});
-
 function SendMessage (type, data) {
     Module.SendMessage("BrowserComm", type, JSON.stringify(data));
 }
@@ -119,7 +93,31 @@ function UNITY_sendStatHatCount () {
 }
 
 function UNITY_sendPlayerParams (data) {
-    sessionCallbackID = JSON.parse(data).callbackId;
+    let sessionCallbackID = JSON.parse(data).callbackId;
+    fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(async (response) => {
+        let data = await response.json();
+
+        sessionData.profileID = profileID;
+
+        sessionData.sessionToken = data.sessionToken;
+        sessionData.token = data.token;
+
+        sessionData.newPlanetName = data.sessionID;
+        sessionData.planetName = data.sessionID;
+
+        let sessionTokenID = JSON.parse(data.sessionToken.split(".")[0]).id;
+        sessionData.pingURL = `https://www.kogama.com/locator/session/${sessionTokenID}/ping/?token=${data.sessionToken}`;
+        sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}`;
+        sessionData.unityPacketURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&plugin=WEBGL&ssl=1&unityPacket=1`;
+        sessionData.disconnectURL = `https://www.kogama.com/locator/session/${sessionTokenID}/leave/?token=${data.sessionToken}&profileID=${profileID}&objectID=7460414&lang=en_US&type=1&referrer=kogama&plugin=WEBGL&ssl=1&unityPacket=1`;
+
+        sessionData.serverIP = `wss://${data.hostName}:${data.wssPort}`;
+        
+        SendMessage("ExternalCallback", {
+            callbackId: sessionCallbackID,
+            data: JSON.stringify(sessionData)
+        });
+    });
 }
 
 function UNITY_gotoDisconnectedPage () {
