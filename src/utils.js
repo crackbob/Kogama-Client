@@ -12,7 +12,7 @@ let typeToGameMode = {
 function UNITY_sendPlayerParams (data) {
     let urlParams = new URLSearchParams(document.location.search);
     let gameID = urlParams.get("gameID") || 7460414;
-    let profileID = 0;
+    let profileID = urlParams.get("ProfileID") || 0;
     let gamemode = "play";
 
     let sessionCallbackID = JSON.parse(data).callbackId;
