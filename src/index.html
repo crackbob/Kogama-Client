@@ -1,26 +1,50 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Kogama</title>
-  </head>
-  <body style="text-align: center">
-    <canvas id="unity-canvas" width=960 height=540 style="width: 960px; height: 540px; background: #231F20"></canvas>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kogama Client</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #unity-canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="unity-canvas"></canvas>
     <script src="game/WebGLBuild.loader.js"></script>
     <script src="utils.js"></script>
     <script src="memoryUtils.js"></script>
     <script>
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "game/WebGLBuild.data",
-        frameworkUrl: "game/WebGLBuild.framework.js",
-        codeUrl: "game/WebGLBuild.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Multiverse ApS",
-        productName: "KoGaMa",
-        productVersion: "2.30.55"
-      });
+        let canvas = document.querySelector("#unity-canvas");
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        
+        resizeCanvas();
+
+        createUnityInstance(canvas, {
+            dataUrl: "game/WebGLBuild.data",
+            frameworkUrl: "game/WebGLBuild.framework.js",
+            codeUrl: "game/WebGLBuild.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "Multiverse ApS",
+            productName: "KoGaMa",
+            productVersion: "2.30.55"
+        });
     </script>
-  </body>
+</body>
 </html>

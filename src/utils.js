@@ -91,6 +91,16 @@ function UNITY_showRewardedVideoAd (data) {
     })
 }
 
+function  UNITY_showVideoAd (data) {
+    let callbackId = JSON.parse(data).callbackId;
+    SendMessage("ExternalCallback", {
+        callbackId: callbackId,
+        data: JSON.stringify({
+            status: 1
+        })
+    })
+}
+
 function UNITY_requestDomain (data) {
     let callbackId = JSON.parse(data).callbackId;
     SendMessage("ExternalCallback", {

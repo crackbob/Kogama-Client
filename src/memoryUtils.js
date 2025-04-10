@@ -3,6 +3,9 @@ function set32(addr,val){return Module.HEAP32[addr/4] = val;}
 function read8(addr){return Module.HEAP8[addr];}
 function set8(addr,val){return Module.HEAP32[addr] = val;}
 
+function readFloat32(addr){return Module.HEAPF32[addr/4];}
+function setFloat32(addr,val){return Module.HEAPF32[addr/4] = val;}
+
 function read16(addr){return Module.HEAP16[addr/2];}
 function set16(addr,val){return Module.HEAP16[addr/2] = val;}
 
