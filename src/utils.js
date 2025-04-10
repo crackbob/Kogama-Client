@@ -28,8 +28,8 @@ let sessionData = {
     "isIOSDevice": false
 }
 
-fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(response => {
-    let data = response.json();
+fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(async (response) => {
+    let data = await response.json();
 
     sessionData.sessionToken = data.sessionToken;
     sessionData.token = data.token;
@@ -65,6 +65,7 @@ function UNITY_requestRewardedVideoAd (info) {
         })
     });
 }
+
 
 function UNITY_requestDomain (info) {
     let callbackId = JSON.parse(info).callbackId;
