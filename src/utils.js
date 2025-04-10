@@ -1,6 +1,4 @@
 let sessionData = {
-    "planetName": "535d3499-c959-4579-9b01-a5e0c7abbe5c",
-    "newPlanetName": "535d3499-c959-4579-9b01-a5e0c7abbe5c",
     "serverIP": "wss://www-gs7.kgoma.com:9091",
     "isSoftLaunch": false,
     "language": "en_US",
@@ -28,6 +26,7 @@ let sessionData = {
     "isIOSDevice": false
 }
 
+let sessionCallbackID = 0;
 fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang=en_US&type=1").then(async (response) => {
     let data = await response.json();
 
@@ -39,7 +38,13 @@ fetch("https://www.kogama.com/locator/session/?objectID=7460414&profileID=0&lang
 
     let sessionTokenID = JSON.parse(data.sessionToken.split(".")[0]);
     sessionData.pingURL = `https://www.kogama.com/locator/session/${sessionTokenID}/ping/?token=${data.sessionToken}`;
+
+    sessionData.serverIP = `wss://${data.hostName}:${data.wssPort}`;
     
+    SendMessage("ExternalCallback", {
+        callbackId: sessionCallbackID,
+        data: JSON.stringify(sessionData)
+    });
 });
 
 function SendMessage (type, data) {
@@ -66,6 +71,13 @@ function UNITY_requestRewardedVideoAd (info) {
     });
 }
 
+function UNITY_readyForAd () {
+
+}
+
+function UNITY_gamePlayStatus () {
+    
+}
 
 function UNITY_requestDomain (info) {
     let callbackId = JSON.parse(info).callbackId;
@@ -105,11 +117,7 @@ function UNITY_sendStatHatCount () {
 }
 
 function UNITY_sendPlayerParams (data) {
-    let callbackId = JSON.parse(data).callbackId;
-    SendMessage("ExternalCallback", {
-        callbackId: callbackId,
-        data: JSON.stringify(sessionData)
-    });
+    sessionCallbackID = JSON.parse(data).callbackId;
 }
 
 function UNITY_gotoDisconnectedPage () {
