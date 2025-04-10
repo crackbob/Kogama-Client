@@ -111,6 +111,10 @@ function UNITY_gotoDisconnectedPage () {
     console.log("disconnected");
 }
 
+function UNITY_gotoIdlePage () {
+    console.log("disconnected");
+}
+
 function UNITY_sendStatHatValue () {
 
 }

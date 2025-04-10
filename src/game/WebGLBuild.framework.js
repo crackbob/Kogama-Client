@@ -3062,6 +3062,7 @@ var unityFramework = ( () => {
             }
         }
         var webSocketInstances = [];
+        window.webSocketInstances = webSocketInstances;
         function _SocketClose(socketInstance) {
             var socket = webSocketInstances[socketInstance];
             socket.socket.close()
