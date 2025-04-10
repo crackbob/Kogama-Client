@@ -2,13 +2,21 @@ function SendMessage (type, data) {
     Module.SendMessage("BrowserComm", type, JSON.stringify(data));
 }
 
+let typeToGameMode = {
+    "edit": 0,
+    "play": 1,
+    "character": 2,
+    "local-play": 1
+}
+
 function UNITY_sendPlayerParams (data) {
     let urlParams = new URLSearchParams(document.location.search);
     let gameID = urlParams.get("gameID") || 7460414;
     let profileID = 0;
+    let gamemode = "play";
 
     let sessionCallbackID = JSON.parse(data).callbackId;
-    fetch(`https://www.kogama.com/locator/session/?objectID=${gameID}&profileID=${profileID}&lang=en_US&type=play`).then(async (response) => {
+    fetch(`https://www.kogama.com/locator/session/?objectID=${gameID}&profileID=${profileID}&lang=en_US&type=${gamemode}`).then(async (response) => {
         
         let data = await response.json();
         let sessionTokenID = JSON.parse(data.sessionToken.split(".")[0]).id;
@@ -32,6 +40,7 @@ function UNITY_sendPlayerParams (data) {
             "referrer": "kogama",
             "detailedStats": false,
             "isIOSDevice": false,
+            "gameMode": typeToGameMode[gamemode],
             "profileID": profileID,
             "planetID": gameID,
             "sessionToken": data.sessionToken,
